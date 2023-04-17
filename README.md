@@ -2,7 +2,7 @@
 
 Training a Large Language Model to speak like an anime character using p-tuning
 
-使用[ChatGLM](https://github.com/THUDM/ChatGLM-6B/)默认自带的ptuning脚本，让语言模型学习动漫人物的语言风格和小说中的设定。
+使用[ChatGLM](https://github.com/THUDM/ChatGLM-6B/)默认自带的ptuning脚本，让语言模型学习动漫人物的语言风格和小说中的设定。训练数据又使用ChatGPT蒸馏小说得到。
 
 # 使用方法
 
