@@ -1,4 +1,4 @@
-# 基于ChatGLM6B的动漫角色调校实验
+# 基于ChatGLM-6B的动漫角色调校实验
 
 Training a Large Language Model to speak like an anime character using p-tuning
 
