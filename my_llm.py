@@ -14,7 +14,7 @@ def llm_chatgpt(query):
 
         if llm_chatgpt.max_output_tokens is None:
             # print(llm_chatgpt.max_tokens,chatgpt.get_num_tokens(query))
-            max_output_tokens=llm_chatgpt.max_all_tokens-chatgpt.get_num_tokens(query)-6 # 6 is the number of tokens for the internal prompt
+            max_output_tokens=llm_chatgpt.max_all_tokens-chatgpt.get_num_tokens(query)-8 # magic number of tokens for the internal prompt
         # The maximum number of tokens to generate in the completion. see https://python.langchain.com/en/latest/reference/modules/llms.html
         chatgpt.model_kwargs['max_tokens']=max_output_tokens # doc of langchain is very bad but it works
         chatgpt.model_kwargs['temperature']=llm_chatgpt.temperature 
