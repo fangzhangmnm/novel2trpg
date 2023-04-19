@@ -11,14 +11,24 @@ def llm_chatgpt(query):
     if llm_chatgpt.disabled:
         return ''
     else:
+
+        if llm_chatgpt.max_output_tokens is None:
+            # print(llm_chatgpt.max_tokens,chatgpt.get_num_tokens(query))
+            max_output_tokens=llm_chatgpt.max_all_tokens-chatgpt.get_num_tokens(query)-6 # 6 is the number of tokens for the internal prompt
+        # The maximum number of tokens to generate in the completion. see https://python.langchain.com/en/latest/reference/modules/llms.html
+        chatgpt.model_kwargs['max_tokens']=max_output_tokens # doc of langchain is very bad but it works
+        chatgpt.model_kwargs['temperature']=llm_chatgpt.temperature 
         response=chatgpt(query)
-        response=chatgpt(query)
+
     if llm_chatgpt.show_response:
         print('\033[94m'+response+'\033[0m')
     return response
 llm_chatgpt.show_query=True
 llm_chatgpt.show_response=True
 llm_chatgpt.disabled=False
+llm_chatgpt.temperature=0.01
+llm_chatgpt.max_all_tokens=4096
+llm_chatgpt.max_output_tokens=None
 
 def llm_chatglm(query):
     if not llm_chatglm.disabled and chatglm_model is None:
@@ -30,10 +40,10 @@ def llm_chatglm(query):
     if llm_chatglm.disabled:
         return ''
     else:
-        if llm_chatglm.max_count is None:
-            max_count=llm_chatglm.max_length-len(chatglm_tokenizer.encode(query))
+        if llm_chatglm.max_output_tokens is None:
+            max_output_tokens=llm_chatglm.max_all_tokens-len(chatglm_tokenizer.encode(query))
         else:
-            max_count=llm_chatglm.max_count
+            max_output_tokens=llm_chatglm.max_output_tokens
         if llm_chatglm.show_response:
             print('\033[94m',end='')
         for response, history in chatglm_model.stream_chat(chatglm_tokenizer, query, history=[],temperature=llm_chatglm.temperature,max_length=llm_chatglm.max_length):
@@ -41,7 +51,7 @@ def llm_chatglm(query):
                 print(response[old_length:],end='')
                 old_length=len(response)
             count += 1
-            if count >= max_count:
+            if count >= max_output_tokens:
                 break
         if llm_chatglm.show_response:
             print('\033[0m')
@@ -50,8 +60,8 @@ llm_chatglm.show_query=True
 llm_chatglm.show_response=True
 llm_chatglm.disabled=False
 llm_chatglm.temperature=0.01
-llm_chatglm.max_length=2048
-llm_chatglm.max_count=None
+llm_chatglm.max_all_tokens=2048
+llm_chatglm.max_output_tokens=None
 
 
 
