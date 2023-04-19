@@ -23,5 +23,5 @@ python main.py ^
     --save_steps 50 ^
     --learning_rate 1e-2 ^
     --quantization_bit 4 ^
-    --resume_from_checkpoint output/roleplaying-chatglm-6b-pt-128-1e-2/checkpoint-2950
+    --resume_from_checkpoint output/roleplaying-chatglm-6b-pt-128-1e-2/checkpoint-3150
 

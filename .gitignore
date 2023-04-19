@@ -131,8 +131,14 @@ dmypy.json
 
 灼眼的夏娜.txt
 灼眼的夏娜_wiki.txt
+零之使魔.txt
 output
-output_shana
+
+distilled_log
+distilled_interview
+faiss_index
+novel_chunks
+
 .cache
 train.json
 test.json
