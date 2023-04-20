@@ -139,6 +139,7 @@ distilled_interview
 chapter_summary
 faiss_index
 novel_chunks
+trash
 
 .cache
 train.json
