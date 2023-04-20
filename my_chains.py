@@ -33,3 +33,17 @@ json：'''
             return {'content':None, 'error':e, 'response':response}
         return {'content':json_object, 'error':None, 'response':response}
 
+
+class Text2TextChain(Chain):
+    llm:object=None
+    @property
+    def input_keys(self):
+        return ['query']
+    @property
+    def output_keys(self):
+        return ['response']
+    prompt='''{query}'''
+    def _call(self,inputs:dict)->dict:
+        query=self.prompt.format(**inputs)
+        response=self.llm(query)
+        return {'response':response}
