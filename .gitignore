@@ -142,5 +142,6 @@ novel_chunks
 trash
 
 .cache
+*.cache.json
 train.json
 test.json
