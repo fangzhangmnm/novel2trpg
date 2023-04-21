@@ -11,8 +11,8 @@ python main.py ^
     --model_name_or_path D:\ml\chatglm-6b-int4-qe\ ^
     --output_dir output/roleplaying-chatglm-6b-pt-128-1e-2 ^
     --overwrite_output_dir ^
-    --max_source_length 384 ^
-    --max_target_length 96 ^
+    --max_source_length 400 ^
+    --max_target_length 80 ^
     --pre_seq_len 128 ^
     --per_device_train_batch_size 1 ^
     --per_device_eval_batch_size 1 ^
