@@ -18,10 +18,10 @@ python main.py ^
     --per_device_eval_batch_size 1 ^
     --gradient_accumulation_steps 16 ^
     --predict_with_generate ^
-    --max_steps 6000 ^
+    --max_steps 30000 ^
     --logging_steps 10 ^
     --save_steps 50 ^
     --learning_rate 1e-2 ^
-    --quantization_bit 4 
-@REM --resume_from_checkpoint output_zero/llm-checkpoints/checkpoint-####
+    --quantization_bit 4 ^
+    --resume_from_checkpoint output_zero/llm-checkpoints/checkpoint-4100
 

@@ -145,3 +145,5 @@ trash
 *.cache.json
 train.json
 test.json
+
+llm-checkpoints/
