@@ -23,5 +23,6 @@ python main.py ^
     --save_steps 50 ^
     --learning_rate 1e-2 ^
     --quantization_bit 4 ^
-    --resume_from_checkpoint output_zero/llm-checkpoints/checkpoint-4100
+    --preview_text_generation_interval 10 ^
+    --resume_from_checkpoint output_zero/llm-checkpoints/checkpoint-17900
 

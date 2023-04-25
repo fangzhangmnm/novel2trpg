@@ -132,6 +132,7 @@ dmypy.json
 灼眼的夏娜.txt
 灼眼的夏娜_wiki.txt
 零之使魔.txt
+零之使魔.md
 output
 
 distilled_log
@@ -140,6 +141,8 @@ chapter_summary
 faiss_index
 novel_chunks
 trash
+chapters
+chunks
 
 .cache
 *.cache.json

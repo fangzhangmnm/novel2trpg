@@ -40,6 +40,7 @@ from transformers import (
     HfArgumentParser,
     Seq2SeqTrainingArguments,
     set_seed,
+    TrainerCallback,
 )
 from trainer_seq2seq import Seq2SeqTrainer
 
@@ -47,15 +48,46 @@ from arguments import ModelArguments, DataTrainingArguments
 
 logger = logging.getLogger(__name__)
 
+def hook(trainer,tokenizer):
+    def _hook(func):
+        def wrapper(*args, **kwargs):
+            return_outputs=kwargs.get("return_outputs", False)
+            kwargs["return_outputs"] = True
+            result = func(*args, **kwargs)
+
+            input_ids=args[1]['input_ids'].flatten().tolist()
+            logits=result[1].logits
+            probs = torch.softmax(logits, dim=-1)
+            top_probs, top_indices = torch.topk(probs, k=1, dim=-1)
+            output_indices = top_indices.flatten().tolist()
+            window=80
+            for i in range(0,len(input_ids),window):
+                input_window=input_ids[i:i+window]
+                output_window=output_indices[i:i+window]
+                input_text = tokenizer.decode(input_window).replace('\n','')
+                output_text = tokenizer.decode(output_window).replace('\n','')
+                print(input_text)
+                print(output_text)
+
+
+            if not return_outputs:
+                result=result[0]
+            return result
+        return wrapper
+    trainer.compute_loss = _hook(trainer.compute_loss)
+    return trainer
+
+from text_generation_callback import TextGenerationCallback,TextGenerationCallbackArguments
+
 def main():
 
-    parser = HfArgumentParser((ModelArguments, DataTrainingArguments, Seq2SeqTrainingArguments))
+    parser = HfArgumentParser((ModelArguments, DataTrainingArguments, Seq2SeqTrainingArguments, TextGenerationCallbackArguments))
     if len(sys.argv) == 2 and sys.argv[1].endswith(".json"):
         # If we pass only one argument to the script and it's the path to a json file,
         # let's parse it to get our arguments.
-        model_args, data_args, training_args = parser.parse_json_file(json_file=os.path.abspath(sys.argv[1]))
+        model_args, data_args, training_args, text_generation_callback_args = parser.parse_json_file(json_file=os.path.abspath(sys.argv[1]))
     else:
-        model_args, data_args, training_args = parser.parse_args_into_dataclasses()
+        model_args, data_args, training_args, text_generation_callback_args = parser.parse_args_into_dataclasses()
 
     # Setup logging
     logging.basicConfig(
@@ -362,6 +394,12 @@ def main():
         data_collator=data_collator,
         compute_metrics=compute_metrics if training_args.predict_with_generate else None,
     )
+
+    trainer.add_callback(TextGenerationCallback(interval=text_generation_callback_args.preview_text_generation_interval,
+                                                max_new_tokens=data_args.max_target_length,
+                                                model=model,tokenizer=tokenizer,train_dataset=train_dataset,logger=logger))
+
+    # trainer=hook(trainer,tokenizer)
 
     logger.info("*** FOOBOOFOOBOOFOOBOO ***")
     # Training
